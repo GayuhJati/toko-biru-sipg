@@ -45,7 +45,7 @@
                                 <td class="px-4 py-2 border-b">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                                 <td class="px-4 py-2 border-b">{{ $item->stock }}</td>
                                 <td class="px-4 py-2 border-b">{{ $item->updated_at->format('Y-m-d H:i') }}</td>
-                                <td class="px-4 py-2 border-b flex gap-2">
+                                <td class="px-4 py-2 border-b gap-2">
                                     @can('isPegawai')
                                         <a href="{{ route('pegawai.items.edit', $item->id) }}"
                                             class="text-blue-600 hover:underline">Edit</a>

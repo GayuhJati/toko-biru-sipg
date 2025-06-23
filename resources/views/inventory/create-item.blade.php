@@ -61,8 +61,16 @@
 
             <div class="mb-4">
                 <label for="stock" class="block text-sm font-medium">Stok Awal</label>
-                <input type="number" name="stock" id="stock" value="{{ old('stock', $item->stock ?? 0) }}"
-                    class="w-full border rounded px-3 py-2">
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="decreaseStock()"
+                        class="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300">-</button>
+
+                    <input type="number" name="stock" id="stock" value="{{ old('stock', $item->stock ?? 0) }}"
+                        class="w-[50px] border rounded px-3 py-2 text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none">
+
+                    <button type="button" onclick="increaseStock()"
+                        class="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300">+</button>
+                </div>
                 @error('stock')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -81,10 +89,22 @@
 
 
 <script>
+    function increaseStock() {
+        const input = document.getElementById('stock');
+        input.value = parseInt(input.value || 0) + 1;
+    }
+
+    function decreaseStock() {
+        const input = document.getElementById('stock');
+        let val = parseInt(input.value || 0);
+        if (val > 0) input.value = val - 1;
+    }
+
     function formatRupiah(el) {
         let angka = el.value.replace(/\D/g, '');
         el.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
+
     function previewImage(event) {
         const input = event.target;
         const previewContainer = document.getElementById('preview-container');
@@ -93,7 +113,7 @@
         if (input.files && input.files[0]) {
             const reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 preview.src = e.target.result;
                 previewContainer.classList.remove('hidden');
             }

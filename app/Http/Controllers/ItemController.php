@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -20,6 +21,10 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge([
+            'price' => str_replace('.', '', $request->price),
+        ]);
+
         $request->validate([
             'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'name' => 'required|string',
@@ -32,7 +37,8 @@ class ItemController extends Controller
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('public/items', $filename);
+            // $path = $file->storeAs('public/items', $filename);
+            Storage::disk('public')->putFileAs('items',$file,$filename);
             $storepath = 'items/' . $filename;
         }
 
@@ -40,11 +46,11 @@ class ItemController extends Controller
             'name' => $request->name,
             'photo' => $storepath ?? null,
             'sku' => $request->sku,
-            'price' => (int) str_replace('.', '', $request->price),
+            'price' => $request->price,
             'stock' => $request->stock,
         ]);
 
-        return redirect()->route('pegawai.items.create')->with('success', 'Barang baru berhasil ditambahkan!');
+        return redirect()->route('pegawai.items.index')->with('success', 'Barang baru berhasil ditambahkan!');
     }
 
     public function update(Request $request, Item $item)
@@ -60,12 +66,13 @@ class ItemController extends Controller
             'price' => 'required|numeric',
         ]);
 
-
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('public/items', $filename);
+            // $path = $file->storeAs('public/items', $filename);
+            Storage::disk('public')->putFileAs('items',$file,$filename);
             $storepath = 'items/' . $filename;
+
         }
 
         $item->update([
