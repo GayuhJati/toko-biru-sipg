@@ -8,6 +8,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\BannerController;
 
 
 
@@ -21,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/report', [SaleController::class, 'index'])->name('report');
     Route::get('/sales/export', [SaleController::class, 'export'])->name('sales.export');
     Route::get('/sales/report', [SaleController::class, 'index'])->name('sales.report');
+    Route::resource('banners', BannerController::class)->middleware('auth');
 
 
     Route::middleware('can:isPegawai')->prefix('pegawai')->group(function () {
