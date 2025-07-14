@@ -1,19 +1,23 @@
 <?php
 
-namespace App\View\Components\admin;
+namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use App\Models\Banner;
 
 class AdminDashboard extends Component
 {
     /**
      * Create a new component instance.
      */
+
+    public $banners;
+
     public function __construct()
-    {
-        //
+    {   
+        $this->banners = Banner::all();
     }
 
     /**
@@ -21,6 +25,8 @@ class AdminDashboard extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.admin.admin-dashboard');
+        return view('components.admin-dashboard')->with([
+            'banners' => $this->banners,
+        ]);
     }
 }

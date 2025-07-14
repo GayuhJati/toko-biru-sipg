@@ -13,7 +13,7 @@ use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 
-class SalesExport implements FromCollection, WithHeadings, WithStyles, WithDefaultStyles, WithColumnWidths
+class SalesExport implements FromCollection, WithHeadings, WithStyles, WithColumnWidths
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -52,18 +52,8 @@ class SalesExport implements FromCollection, WithHeadings, WithStyles, WithDefau
     public function styles(Worksheet $sheet)
     {
         return [
-            1    => ['font' => ['bold' => true, 'color' => ['argb' => Color::COLOR_WHITE]]],
+            1    => ['font' => ['bold' => true]],
         ];
     }
 
-    public function defaultStyles(Style $defaultStyle)
-    {
-
-        return [
-            'fill' => [
-                'fillType'   => Fill::FILL_SOLID,
-                'startColor' => ['argb' => Color::COLOR_BLUE],
-            ],
-        ];
-    }
 }

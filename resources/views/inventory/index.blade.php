@@ -26,7 +26,11 @@
                             <th class="px-4 py-2 border-b">Harga</th>
                             <th class="px-4 py-2 border-b">Stok</th>
                             <th class="px-4 py-2 border-b">Terakhir Diupdate</th>
-                            <th class="px-4 py-2 border-b">Aksi</th>
+                            @auth
+                                @can('isPegawai')
+                                    <th class="px-4 py-2 border-b">Aksi</th>
+                                @endcan
+                            @endauth
                         </tr>
                     </thead>
                     <tbody>
