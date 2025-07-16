@@ -1,88 +1,36 @@
 <div class="p-4 bg-white rounded shadow">
-    <h2 class="text-xl font-semibold mb-4">Banner</h2>
-    <p class="mb-4">Kelola banner yang ditampilkan di halaman utama.</p>
+    <div class="w-full">
+        <!-- Tab Header -->
+        <ul id="tabs"
+            class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 ">
+            <li class="me-2">
+                <button data-tab="banner"
+                    class="tab-button inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active">
+                    Banner
+                </button>
+            </li>
+            <li class="me-2">
+                <button data-tab="artikel"
+                    class="tab-button inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 ">
+                    Artikel
+                </button>
+            </li>
+        </ul>
 
-    <!-- Button to open modal -->
-    <button onclick="document.getElementById('modal').classList.remove('hidden')"
-        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4">
-        + Tambah Banner
-    </button>
+        <!-- Tab Contents -->
+        <div id="tab-content">
+            <!-- Banner Content -->
+            <div id="banner" class="tab-panel p-4 bg-white rounded shadow">
+                <x-banner-tab :banners="$banners" />
+            </div>
 
-    <div id="modal" class="fixed inset-0 bg-black/30  items-center justify-center hidden">
-        <div class="bg-white p-6 rounded shadow-lg w-[400px]">
-            <h2 class="text-lg font-bold mb-4">Upload Banner</h2>
-            <form method="POST" action="{{ route('banners.store') }}" enctype="multipart/form-data"
-                class="flex flex-col gap-2 mb-2">
-                @csrf
-                <label for="title">Judul:</label>
-                <input type="text" name="title" class="border rounded w-full h-[30px] mb-3">
-
-                <label for="image">Gambar:</label>
-                <div id="preview-container" class="mt-4 hidden">
-                    <p class="text-sm text-gray-600 mb-2">Preview:</p>
-                    <img id="preview" src="#" alt="Preview Gambar" class="max-w-xs rounded shadow border" />
-                </div>
-                <input type="file" name="image" class="mb-3" accept="image/*" onchange="previewImage(event)">
-
-
-                <label>
-                    <input type="checkbox" name="is_active"> Aktif
-                </label>
-
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 mt-2 rounded">Simpan</button>
-            </form>
+            <!-- Artikel Content -->
+            <div id="artikel" class="tab-panel p-4 bg-white rounded shadow hidden">
+                <h2 class="text-xl font-semibold mb-4">Artikel</h2>
+                <p>Konten untuk manajemen artikel akan ditampilkan di sini.</p>
+            </div>
         </div>
     </div>
-    <div class="p-4 bg-white rounded shadow">
-        <h2 class="text-xl font-semibold mb-4">Daftar Banner</h2>
-
-        <table class="min-w-full bg-white border border-gray-200 rounded">
-            <thead>
-                <tr class="bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                    <th class="p-3 border">No</th>
-                    <th class="p-3 border">Judul</th>
-                    <th class="p-3 border">Gambar</th>
-                    <th class="p-3 border">Status</th>
-                    <th class="p-3 border">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($banners as $index => $banner)
-                    <tr class="border-b hover:bg-gray-50 text-sm">
-                        <td class="p-3 border">{{ $index + 1 }}</td>
-                        <td class="p-3 border">{{ $banner->title ?? '-' }}</td>
-                        <td class="p-3 border">
-                            <img src="{{ asset('storage/' . $banner->image) }}" class="h-16 w-auto rounded shadow"
-                                alt="Banner">
-                        </td>
-                        <td class="p-3 border">
-                            @if ($banner->is_active)
-                                <span class="text-green-600 font-semibold">Aktif</span>
-                            @else
-                                <span class="text-gray-400">Nonaktif</span>
-                            @endif
-                        </td>
-                        <td class="p-3 border flex gap-2">
-                            <form method="POST" action="{{ route('banners.destroy', $banner) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button onclick="return confirm('Yakin hapus banner ini?')"
-                                    class="bg-red-500 text-white text-xs px-3 py-1 rounded">Hapus</button>
-                            </form>
-                            {{-- Tombol Edit (jika ada rutenya) --}}
-                            {{-- <a href="{{ route('banners.edit', $banner) }}" class="bg-blue-500 text-white text-xs px-3 py-1 rounded">Edit</a> --}}
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-4 text-gray-500">Tidak ada banner tersedia.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-
-
 </div>
 
 <script>
@@ -102,4 +50,20 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active classes
+            tabButtons.forEach(btn => btn.classList.remove('text-blue-600', 'bg-gray-100'));
+            tabPanels.forEach(panel => panel.classList.add('hidden'));
+
+            // Add active to clicked
+            button.classList.add('text-blue-600', 'bg-gray-100');
+            const target = button.getAttribute('data-tab');
+            document.getElementById(target).classList.remove('hidden');
+        });
+    });
 </script>

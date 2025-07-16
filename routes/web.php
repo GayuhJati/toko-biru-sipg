@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\UserController as ApiUserController;
 use App\Http\Controllers\Auth\LoginController as AuthLoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
@@ -16,6 +17,11 @@ Route::redirect('/', '/login');
 Route::get('/login', [AuthLoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthLoginController::class, 'login']);
 Route::post('/logout', [AuthLoginController::class, 'logout'])->name('logout');
+
+Route::get('/sanctum/csrf-cookie', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
