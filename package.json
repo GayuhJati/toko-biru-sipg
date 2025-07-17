@@ -17,6 +17,7 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^41.4.2",
         "chart.js": "^4.4.9"
     }
 }

@@ -10,6 +10,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CKEditorController;
 
 
 
@@ -29,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sales/export', [SaleController::class, 'export'])->name('sales.export');
     Route::get('/sales/report', [SaleController::class, 'index'])->name('sales.report');
     Route::resource('banners', BannerController::class)->middleware('auth');
+    Route::post('/upload-image', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 
 
     Route::middleware('can:isPegawai')->prefix('pegawai')->group(function () {
@@ -52,5 +55,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/transactions', [TransactionController::class, 'index'])->name('admin.transactions');
         Route::resource('/users', UserController::class, ['as' => 'admin']); // route admin.users.*
         Route::get('/inventory', [InventoryController::class, 'index'])->name('admin.inventory');
+        Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
+        Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+        Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+        Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
+        Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
     });
 });

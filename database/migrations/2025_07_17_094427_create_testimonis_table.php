@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('testimonis', function (Blueprint $table) {
             $table->id();
-            $table->string('title'); // Judul artikel
-            $table->string('author')->nullable(); // Nama penulis, bisa nullable
-            $table->text('content'); // Isi artikel
-            $table->boolean('is_published')->default(false); // Status publish
             $table->timestamps();
         });
     }
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('testimonis');
     }
 };

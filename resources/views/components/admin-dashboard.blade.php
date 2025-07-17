@@ -26,8 +26,7 @@
 
             <!-- Artikel Content -->
             <div id="artikel" class="tab-panel p-4 bg-white rounded shadow hidden">
-                <h2 class="text-xl font-semibold mb-4">Artikel</h2>
-                <p>Konten untuk manajemen artikel akan ditampilkan di sini.</p>
+                <x-article-tab :articles="$articles" />
             </div>
         </div>
     </div>
@@ -51,19 +50,40 @@
         }
     }
 
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabPanels = document.querySelectorAll('.tab-panel');
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanels = document.querySelectorAll('.tab-panel');
 
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active classes
-            tabButtons.forEach(btn => btn.classList.remove('text-blue-600', 'bg-gray-100'));
-            tabPanels.forEach(panel => panel.classList.add('hidden'));
+        // Fungsi untuk ganti tab
+        function activateTab(tabName) {
+            tabButtons.forEach(btn => {
+                const target = btn.getAttribute('data-tab');
+                const isActive = target === tabName;
 
-            // Add active to clicked
-            button.classList.add('text-blue-600', 'bg-gray-100');
-            const target = button.getAttribute('data-tab');
-            document.getElementById(target).classList.remove('hidden');
+                btn.classList.toggle('text-blue-600', isActive);
+                btn.classList.toggle('bg-gray-100', isActive);
+            });
+
+            tabPanels.forEach(panel => {
+                panel.classList.toggle('hidden', panel.id !== tabName);
+            });
+        }
+
+        // Aktifkan tab dari query string (misalnya ?tab=artikel)
+        const activeTabFromQuery = new URLSearchParams(window.location.search).get('tab');
+        if (activeTabFromQuery) {
+            activateTab(activeTabFromQuery);
+        }
+
+        // Event listener untuk klik manual
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.getAttribute('data-tab');
+                activateTab(target);
+                // Optional: ubah URL tanpa reload halaman
+                history.replaceState(null, '', '?tab=' + target);
+            });
         });
     });
 </script>
+

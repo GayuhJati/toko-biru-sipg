@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Article;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -14,10 +15,12 @@ class AdminDashboard extends Component
      */
 
     public $banners;
+    public $articles;
 
     public function __construct()
     {   
         $this->banners = Banner::all();
+        $this->articles = Article::all();
     }
 
     /**
@@ -27,6 +30,7 @@ class AdminDashboard extends Component
     {
         return view('components.admin-dashboard')->with([
             'banners' => $this->banners,
+            'articles' => $this->articles,
         ]);
     }
 }
