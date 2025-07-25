@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('testimonis', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');        
-            $table->text('message');        
-            $table->tinyInteger('rating');  
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
+        Schema::table('messages', function (Blueprint $table) {
+            $table->string('room_id')->nullable()->index();
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('testimonis');
+        Schema::table('messages', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -12,6 +12,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CKEditorController;
+use Illuminate\Support\Facades\Broadcast;
 
 
 
@@ -23,6 +24,8 @@ Route::post('/logout', [AuthLoginController::class, 'logout'])->name('logout');
 Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
+
+// Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
 
 Route::middleware(['auth'])->group(function () {
